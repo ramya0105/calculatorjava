@@ -17,26 +17,22 @@ public class CalculatorGUI {
         display.setHorizontalAlignment(JTextField.RIGHT);
         
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 4)); // Layout for calculator buttons
+        panel.setLayout(new GridLayout(5, 4)); 
         
         String[] buttonLabels = {
             "7", "8", "9", "/",
             "4", "5", "6", "*",
             "1", "2", "3", "-",
             "0", ".", "=", "+",
-            "C" // Clear button
+            "C"
         };
 
         ActionListener buttonListener = new ButtonClickListener();
-        
-        // Create buttons and add them to the panel
         for (String label : buttonLabels) {
             JButton button = new JButton(label);
             button.addActionListener(buttonListener);
             panel.add(button);
         }
-        
-        // Arrange components in the frame
         frame.setLayout(new BorderLayout());
         frame.add(display, BorderLayout.NORTH);
         frame.add(panel, BorderLayout.CENTER);
@@ -51,8 +47,6 @@ public class CalculatorGUI {
         public void actionPerformed(ActionEvent e) {
             JButton source = (JButton) e.getSource();
             String text = source.getText();
-            
-            // Handle numeric and decimal input
             if (text.matches("[0-9]")) {
                 currentInput.append(text);
                 display.setText(currentInput.toString());
@@ -76,7 +70,6 @@ public class CalculatorGUI {
             } else if (text.equals("C")) {
                 clear();
             } else {
-                // Handle operators and build the expression
                 if (currentInput.length() > 0) {
                     expression.append(currentInput.toString());
                     expression.append(" ").append(text).append(" ");
@@ -93,7 +86,6 @@ public class CalculatorGUI {
         }
 
         private double evaluateExpression(String expr) throws Exception {
-            // Split expression into tokens
             String[] tokens = expr.split(" ");
             Stack<Double> values = new Stack<>();
             Stack<Character> operators = new Stack<>();
@@ -108,8 +100,6 @@ public class CalculatorGUI {
                     operators.push(token.charAt(0));
                 }
             }
-
-            // Apply remaining operators
             while (!operators.isEmpty()) {
                 values.push(applyOperator(operators.pop(), values.pop(), values.pop()));
             }
